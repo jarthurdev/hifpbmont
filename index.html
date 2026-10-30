@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HIFPB Monteiro — Horário Acadêmico 2026.2 | IFPB</title>
+  
+  <meta name="description" content="Sistema de Consulta de Horários Acadêmicos do IFPB Campus Monteiro. Consulte horários por turma, curso, professor ou ambiente.">
+  <meta name="author" content="IFPB Campus Monteiro - Demonstração">
+  
+  <!-- Favicon SVG -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  
+  <!-- Folha de Estilos Principal -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Topbar Institucional Governamental / IFPB -->
+  <aside class="gov-topbar" aria-label="Barra institucional">
+    <div class="container gov-container">
+      <div class="gov-left">
+        <span class="gov-flag" aria-hidden="true">🟢🟡🔵</span>
+        <span class="gov-title">Ministério da Educação — Instituto Federal da Paraíba</span>
+      </div>
+      <div class="gov-right">
+        <a href="#conteudo-principal" class="skip-link">Ir para o conteúdo</a>
+        <span class="campus-pill">Campus Monteiro</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Cabeçalho Principal com Identidade Visual -->
+  <header class="app-header" role="banner">
+    <div class="container header-container">
+      <div class="brand-group">
+        <a href="index.html" class="brand-logo-link" title="Voltar ao início do HIFPB Monteiro">
+          <img src="assets/images/ifpb-logo.svg" alt="Logotipo do Instituto Federal da Paraíba - Campus Monteiro" class="brand-logo" width="220" height="52">
+        </a>
+        <div class="brand-divider" aria-hidden="true"></div>
+        <div class="brand-titles">
+          <h1 class="system-title">Horário Acadêmico</h1>
+          <p class="system-subtitle">HIFPB Monteiro • Consulta Unificada de Horários</p>
+        </div>
+      </div>
+
+      <div class="header-metadata">
+        <div class="semester-badge">
+          <span class="semester-label">Semestre Letivo</span>
+          <span class="semester-value">2026.2</span>
+        </div>
+        <div class="live-clock-badge" id="liveClockBadge" title="Horário do Campus">
+          <span class="live-indicator-dot" aria-hidden="true"></span>
+          <span id="liveClockText">Carregando...</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main id="conteudo-principal" class="main-content" role="main">
+    <div class="container">
+
+      <!-- Breadcrumbs e Ações Rápidas -->
+      <nav class="breadcrumb-bar" aria-label="Navegação estrutural">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-item"><a href="#" id="breadcrumbHome">Início</a></li>
+          <li class="breadcrumb-item separator" aria-hidden="true">›</li>
+          <li class="breadcrumb-item active" id="breadcrumbCurrent">Consulta Geral</li>
+        </ol>
+
+        <div class="top-status-meta">
+          <span class="update-label">
+            <svg class="icon-inline" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Última atualização: <strong id="lastUpdateText">28/10/2026 às 15:45</strong>
+          </span>
+        </div>
+      </nav>
+
+      <!-- SEÇÃO 1: NAVEGAÇÃO ENTRE OS 4 TIPOS DE CONSULTA -->
+      <section class="query-navigation-section" aria-labelledby="queryNavHeading">
+        <div class="section-title-wrap">
+          <h2 id="queryNavHeading" class="section-heading">Selecione o modo de consulta</h2>
+          <p class="section-subtext">Escolha como deseja visualizar a grade horária acadêmica do Campus Monteiro:</p>
+        </div>
+
+        <div class="query-tabs" role="tablist" aria-label="Tipos de consulta de horários">
+          <button class="query-tab-btn active" role="tab" id="tab-turma" aria-selected="true" aria-controls="panel-selector" data-type="turma">
+            <span class="tab-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </span>
+            <span class="tab-label">Por Turma</span>
+            <span class="tab-badge" id="badgeCountTurma">5</span>
+          </button>
+
+          <button class="query-tab-btn" role="tab" id="tab-curso" aria-selected="false" aria-controls="panel-selector" data-type="curso">
+            <span class="tab-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+              </svg>
+            </span>
+            <span class="tab-label">Por Curso</span>
+            <span class="tab-badge" id="badgeCountCurso">3</span>
+          </button>
+
+          <button class="query-tab-btn" role="tab" id="tab-professor" aria-selected="false" aria-controls="panel-selector" data-type="professor">
+            <span class="tab-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="7" r="4"></circle>
+                <path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"></path>
+                <line x1="12" y1="11" x2="12" y2="15"></line>
+              </svg>
+            </span>
+            <span class="tab-label">Por Professor</span>
+            <span class="tab-badge" id="badgeCountProf">6</span>
+          </button>
+
+          <button class="query-tab-btn" role="tab" id="tab-ambiente" aria-selected="false" aria-controls="panel-selector" data-type="ambiente">
+            <span class="tab-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="9" y1="21" x2="9" y2="9"></line>
+              </svg>
+            </span>
+            <span class="tab-label">Por Ambiente</span>
+            <span class="tab-badge" id="badgeCountAmbiente">5</span>
+          </button>
+        </div>
+
+        <!-- Seletor de Entidades (Lista de Turmas, Cursos, Professores ou Salas) -->
+        <div id="panel-selector" class="entity-selector-panel" role="tabpanel" aria-labelledby="tab-turma">
+          <div class="entity-selector-header">
+            <div class="selector-title-box">
+              <h3 class="entity-selection-title" id="entitySelectionTitle">Selecione uma Turma:</h3>
+              <span class="entity-counter-chip" id="entityCounterChip">5 opções</span>
+            </div>
+            <div class="selector-quick-filter">
+              <div class="search-input-wrapper">
+                <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="selectorSearchInput" class="input-clean" placeholder="Filtrar nesta lista..." aria-label="Filtrar opções da lista">
+                <button type="button" id="selectorSearchClearBtn" class="input-clear-btn" aria-label="Limpar filtro rápido" style="display: none;">&times;</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grade de botões/cards de opções -->
+          <div class="entity-cards-grid" id="entityCardsGrid" role="radiogroup" aria-label="Lista de opções disponíveis">
+            <!-- Injetado dinamicamente via JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 2: RESULTADO DA CONSULTA E GRADE DE HORÁRIOS -->
+      <section class="schedule-result-section" id="scheduleResultSection" style="display: none;" aria-live="polite">
+        
+        <!-- Cartão de Informações da Entidade Selecionada -->
+        <article class="entity-info-card" id="entityInfoCard">
+          <div class="entity-info-primary">
+            <div class="entity-icon-avatar" id="entityInfoAvatar">
+              <!-- Ícone dinâmico -->
+            </div>
+            <div class="entity-text-details">
+              <div class="entity-badge-row">
+                <span class="entity-kind-badge" id="entityKindBadge">Turma</span>
+                <span class="entity-code-badge" id="entityCodeBadge">ADS 2025.1</span>
+              </div>
+              <h2 class="entity-main-name" id="entityMainName">ADS 2025.1 — 4º Período</h2>
+              <p class="entity-secondary-desc" id="entitySecondaryDesc">Tecnologia em Análise e Desenvolvimento de Sistemas • Matutino</p>
+            </div>
+          </div>
+
+          <div class="entity-metadata-grid" id="entityMetadataGrid">
+            <!-- Itens de detalhe injetados dinamicamente -->
+          </div>
+
+          <div class="entity-info-actions">
+            <button type="button" class="btn btn-outline" id="btnBackToSelection" title="Escolher outra turma, curso, professor ou sala">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              Trocar Consulta
+            </button>
+            <button type="button" class="btn btn-primary" id="btnPrintSchedule" title="Imprimir grade horária oficial em PDF">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <rect x="6" y="14" width="12" height="8"></rect>
+              </svg>
+              Imprimir / Salvar PDF
+            </button>
+          </div>
+        </article>
+
+        <!-- Barra de Ferramentas: Filtros Dinâmicos + Alternância de Visualização -->
+        <div class="schedule-controls-toolbar">
+          
+          <!-- Filtros Dinâmicos Interativos -->
+          <div class="filter-controls-group">
+            <div class="search-box">
+              <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="filterSearchInput" class="filter-input" placeholder="Pesquisar disciplina, docente, sala..." aria-label="Pesquisar nos horários">
+              <button type="button" id="filterSearchClearBtn" class="input-clear-btn" aria-label="Limpar pesquisa" style="display: none;">&times;</button>
+            </div>
+
+            <div class="dropdown-filters-wrapper">
+              <!-- Filtro Dia -->
+              <select id="filterDaySelect" class="filter-select" aria-label="Filtrar por dia da semana">
+                <option value="all">Todos os Dias</option>
+                <option value="1">Segunda-feira</option>
+                <option value="2">Terça-feira</option>
+                <option value="3">Quarta-feira</option>
+                <option value="4">Quinta-feira</option>
+                <option value="5">Sexta-feira</option>
+                <option value="6">Sábado</option>
+              </select>
+
+              <!-- Filtro Professor -->
+              <select id="filterTeacherSelect" class="filter-select" aria-label="Filtrar por professor">
+                <option value="all">Todos os Docentes</option>
+              </select>
+
+              <!-- Filtro Sala/Ambiente -->
+              <select id="filterRoomSelect" class="filter-select" aria-label="Filtrar por sala">
+                <option value="all">Todas as Salas</option>
+              </select>
+
+              <!-- Botão Limpar Filtros -->
+              <button type="button" id="btnClearFilters" class="btn btn-ghost" title="Limpar todos os filtros da grade">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 6h18"></path>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                Limpar Filtros
+              </button>
+            </div>
+          </div>
+
+          <!-- Modos de Visualização (Tabela vs Lista) -->
+          <div class="view-mode-group">
+            <span class="view-mode-label">Modo:</span>
+            <div class="view-toggle-pills" role="radiogroup" aria-label="Modo de visualização da grade">
+              <button type="button" id="btnViewTable" class="view-pill active" role="radio" aria-checked="true" title="Visualização semanal em grade/tabela">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="3" y1="9" x2="21" y2="9"></line>
+                  <line x1="3" y1="15" x2="21" y2="15"></line>
+                  <line x1="9" y1="3" x2="9" y2="21"></line>
+                  <line x1="15" y1="3" x2="15" y2="21"></line>
+                </svg>
+                Grade Semanal
+              </button>
+              <button type="button" id="btnViewList" class="view-pill" role="radio" aria-checked="false" title="Visualização por listagem cronológica">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="8" y1="6" x2="21" y2="6"></line>
+                  <line x1="8" y1="12" x2="21" y2="12"></line>
+                  <line x1="8" y1="18" x2="21" y2="18"></line>
+                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+                Listagem por Dia
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seletor de Dias no Celular (Mobile Day Tabs) -->
+        <div class="mobile-days-nav" id="mobileDaysNav" aria-label="Selecionar dia no dispositivo móvel">
+          <button type="button" class="day-tab-btn active" data-day="all">Todos</button>
+          <button type="button" class="day-tab-btn" data-day="1">Seg</button>
+          <button type="button" class="day-tab-btn" data-day="2">Ter</button>
+          <button type="button" class="day-tab-btn" data-day="3">Qua</button>
+          <button type="button" class="day-tab-btn" data-day="4">Qui</button>
+          <button type="button" class="day-tab-btn" data-day="5">Sex</button>
+          <button type="button" class="day-tab-btn" data-day="6">Sáb</button>
+        </div>
+
+        <!-- Estado de Carregamento com Skeleton -->
+        <div id="scheduleLoadingState" class="schedule-loading" style="display: none;" aria-live="polite">
+          <div class="loading-spinner"></div>
+          <p class="loading-text">Carregando horários acadêmicos...</p>
+        </div>
+
+        <!-- Estado de Mensagem Amigável Sem Resultados -->
+        <div id="scheduleEmptyState" class="empty-state-box" style="display: none;">
+          <div class="empty-icon-circle">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </div>
+          <h3 class="empty-title">Nenhum horário encontrado</h3>
+          <p class="empty-desc" id="emptyStateDesc">Nenhuma disciplina corresponde aos critérios de pesquisa ou filtros selecionados.</p>
+          <button type="button" class="btn btn-secondary" id="btnEmptyReset">Limpar Filtros de Busca</button>
+        </div>
+
+        <!-- CONTAINER PRINCIPAL DE VISUALIZAÇÃO: TABELA -->
+        <div id="tableViewContainer" class="schedule-table-card">
+          <div class="table-responsive-wrapper">
+            <table class="academic-schedule-table" id="academicTable" aria-label="Grade horária semanal de aulas">
+              <thead>
+                <tr>
+                  <th scope="col" class="th-horario">Horário</th>
+                  <th scope="col" class="th-day" data-day="1"><span class="day-name">Segunda-feira</span><span class="day-short">Seg</span></th>
+                  <th scope="col" class="th-day" data-day="2"><span class="day-name">Terça-feira</span><span class="day-short">Ter</span></th>
+                  <th scope="col" class="th-day" data-day="3"><span class="day-name">Quarta-feira</span><span class="day-short">Qua</span></th>
+                  <th scope="col" class="th-day" data-day="4"><span class="day-name">Quinta-feira</span><span class="day-short">Qui</span></th>
+                  <th scope="col" class="th-day" data-day="5"><span class="day-name">Sexta-feira</span><span class="day-short">Sex</span></th>
+                  <th scope="col" class="th-day" data-day="6"><span class="day-name">Sábado</span><span class="day-short">Sáb</span></th>
+                </tr>
+              </thead>
+              <tbody id="academicTableBody">
+                <!-- Linhas e horários construídos dinamicamente -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Legenda Informativa da Tabela -->
+          <footer class="table-legend-bar">
+            <div class="legend-item">
+              <span class="legend-chip legend-active-slot"></span>
+              <span>Horário Atual</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-chip legend-has-class"></span>
+              <span>Aula Confirmada</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-chip legend-empty-slot"></span>
+              <span>Horário Livre / Sem aula</span>
+            </div>
+            <div class="legend-note">
+              <span>* Clique no card da aula para consultar a ementa e detalhes pedagógicos.</span>
+            </div>
+          </footer>
+        </div>
+
+        <!-- CONTAINER PRINCIPAL DE VISUALIZAÇÃO: LISTAGEM -->
+        <div id="listViewContainer" class="schedule-list-view" style="display: none;">
+          <div class="list-days-accordion" id="listDaysContainer">
+            <!-- Dias e cards de aulas injetados dinamicamente -->
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Modal de Detalhes da Disciplina -->
+  <div class="modal-backdrop" id="classDetailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" style="display: none;">
+    <div class="modal-card">
+      <header class="modal-header">
+        <div class="modal-tag-row">
+          <span class="modal-badge-discipline" id="modalBadge">Disciplina</span>
+          <span class="modal-badge-shift" id="modalShiftBadge">Turno Matutino</span>
+        </div>
+        <h3 class="modal-title" id="modalTitle">Programação Web</h3>
+        <button type="button" class="modal-close-btn" id="modalCloseBtn" aria-label="Fechar modal de detalhes">&times;</button>
+      </header>
+      <div class="modal-body">
+        <div class="modal-grid-info">
+          <div class="info-cell">
+            <span class="cell-label">Professor(a)</span>
+            <strong class="cell-val" id="modalTeacher">Ana Beatriz Costa</strong>
+          </div>
+          <div class="info-cell">
+            <span class="cell-label">Turma / Período</span>
+            <strong class="cell-val" id="modalClass">ADS 2025.1 (4º Período)</strong>
+          </div>
+          <div class="info-cell">
+            <span class="cell-label">Ambiente / Sala</span>
+            <strong class="cell-val" id="modalRoom">Laboratório de Informática 01</strong>
+          </div>
+          <div class="info-cell">
+            <span class="cell-label">Dia da Semana & Horário</span>
+            <strong class="cell-val" id="modalTime">Segunda-feira • 07:00 às 08:40</strong>
+          </div>
+          <div class="info-cell full-width">
+            <span class="cell-label">Localização no Campus</span>
+            <span class="cell-text" id="modalBuilding">Bloco Acadêmico A - 1º Andar (36 Computadores i7, Projetor)</span>
+          </div>
+          <div class="info-cell full-width">
+            <span class="cell-label">Observações e Metodologia</span>
+            <p class="cell-text note-box" id="modalObs">Prática em laboratório com frameworks JavaScript e APIs.</p>
+          </div>
+        </div>
+      </div>
+      <footer class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="modalCloseBtnAction">Fechar Detalhes</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Toast de Notificações Acessível -->
+  <div id="toastNotification" class="toast-box" role="status" aria-live="polite">
+    <span class="toast-message" id="toastMessage">Filtros aplicados com sucesso.</span>
+  </div>
+
+  <!-- Rodapé Institucional do HIFPB Monteiro -->
+  <footer class="app-footer" role="contentinfo">
+    <div class="container footer-container">
+      <div class="footer-main-grid">
+        
+        <div class="footer-col brand-col">
+          <div class="footer-logo-title">
+            <strong>HIFPB Monteiro</strong>
+            <span>Horários Acadêmicos 2026.2</span>
+          </div>
+          <p class="footer-desc">
+            Sistema desenvolvido para facilitar a consulta integrada de horários de aulas, turmas, docentes e laboratórios do Campus Monteiro.
+          </p>
+          <div class="footer-disclaimer-card">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span><strong>Aviso Acadêmico:</strong> Projeto demonstrativo para o Campus Monteiro. Dados fictícios para simulação de horários.</span>
+          </div>
+        </div>
+
+        <div class="footer-col links-col">
+          <h4 class="footer-col-title">Cursos Ofertados</h4>
+          <ul class="footer-links-list">
+            <li><button type="button" class="footer-link-btn" data-action="pickCourse" data-id="ads">TADS — Análise e Desenv. de Sistemas</button></li>
+            <li><button type="button" class="footer-link-btn" data-action="pickCourse" data-id="tce">TTCE — Tecnologia em Construção de Edifícios</button></li>
+            <li><button type="button" class="footer-link-btn" data-action="pickCourse" data-id="mat">LMAT — Licenciatura em Matemática</button></li>
+          </ul>
+        </div>
+
+        <div class="footer-col campus-col">
+          <h4 class="footer-col-title">Campus Monteiro</h4>
+          <address class="campus-address">
+            <p>Instituto Federal da Paraíba — IFPB</p>
+            <p>Alto de São Vicente, Monteiro - PB, CEP 58500-000</p>
+            <p>Contato: (83) 3351-1800</p>
+            <p>Portal Oficial: <a href="https://www.ifpb.edu.br/monteiro" target="_blank" rel="noopener noreferrer">ifpb.edu.br/monteiro</a></p>
+          </address>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom-bar">
+        <p>© 2026 Instituto Federal da Paraíba — Campus Monteiro. Todos os direitos acadêmicos reservados.</p>
+        <p class="credits-tag">Desenvolvido com HTML5, CSS3 & JavaScript Puro.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts: Base de Dados e Lógica de Aplicação -->
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
